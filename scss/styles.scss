@@ -1,0 +1,53 @@
+body {
+  background-color: #f5f5f5; // Fondo gris claro
+}
+
+.logo {
+  height: 15px; /* Tamaño del logo */
+  width: 15px;
+  margin-right: 10px; /* Espacio entre el logo y el título */
+}
+
+.container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+.option-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 150px; /* Ancho del botón */
+  height: 150px; /* Altura del botón */
+  background-color: #6a6ad7;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 18px; /* Tamaño del texto */
+  line-height: 1.5; /* Alineación del texto y el icono */
+  text-align: center; /* Centrar el texto */
+  padding: 10px; /* Ajuste del padding para centrar el contenido */
+
+  &:hover {
+    background-color: darken(#6a6ad7, 10%);
+  }
+
+  .icon {
+    font-size: 48px; /* Tamaño del icono */
+  }
+}
+
+.text-muted {
+  font-size: 16px; /* Tamaño del texto pequeño */
+}

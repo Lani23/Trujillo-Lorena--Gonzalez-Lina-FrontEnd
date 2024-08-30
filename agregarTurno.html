@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <title>Turnos</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Gestionar Turnos</h1>
+      <button
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addTurnoModal"
+      >
+        Agregar Turno
+      </button>
+
+      <!-- Tabla de pacientes -->
+      <h2 class="mt-5">Pacientes</h2>
+      <table class="table table-striped" id="pacienteTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <!-- Tabla de odontólogos -->
+      <h2 class="mt-5">Odontólogos</h2>
+      <table class="table table-striped" id="odontologoTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Modal para agregar turno -->
+    <div
+      class="modal fade"
+      id="addTurnoModal"
+      tabindex="-1"
+      aria-labelledby="addTurnoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addTurnoModalLabel">Agregar Turno</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addTurnoForm">
+              <div class="mb-3">
+                <label for="pacienteSelect" class="form-label">Paciente</label>
+                <select
+                  id="pacienteSelect"
+                  class="form-select"
+                  required
+                ></select>
+              </div>
+              <div class="mb-3">
+                <label for="odontologoSelect" class="form-label"
+                  >Odontólogo</label
+                >
+                <select
+                  id="odontologoSelect"
+                  class="form-select"
+                  required
+                ></select>
+              </div>
+              <div class="mb-3">
+                <label for="turnoFecha" class="form-label">Fecha</label>
+                <input
+                  type="date"
+                  id="turnoFecha"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Agregar Turno
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/turnos.js"></script>
+  </body>
+</html>
