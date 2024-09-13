@@ -34,13 +34,21 @@ form.addEventListener("submit", function (event) {
     },
     body: JSON.stringify(datosFormulario),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((errorData) => {
+          throw new Error(`Error ${response.status}: ${errorData.errors[0]}`);
+        });
+      }
+      return response.json();
+    })
     .then((data) => {
       console.log(data);
       alert("Paciente agregado con éxito");
       form.reset(); // Resetear el formulario
     })
     .catch((error) => {
+      alert(`Error agregando paciente: ${error.message}`);
       console.error("Error agregando paciente:", error);
     });
 });

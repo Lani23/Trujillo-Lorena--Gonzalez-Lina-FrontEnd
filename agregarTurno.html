@@ -17,35 +17,113 @@
     <title>Turnos</title>
   </head>
   <body>
-    <div class="container mt-5">
-      <h1 class="mb-4">Gestionar Turnos</h1>
-      <button
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#addTurnoModal"
-      >
-        Agregar Turno
-      </button>
-
-      <!-- Tabla de pacientes -->
-      <h2 class="mt-5">Pacientes</h2>
-      <table class="table table-striped" id="pacienteTable">
+    <nav
+      class="navbar bg-dark navbar-expand-lg bg-body-tertiary"
+      data-bs-theme="dark"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/index.html">Clinica Odontologica</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Gestión de Pacientes
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="/listarPaciente.html"
+                    >Listar Paciente</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/agregarPaciente.html"
+                    >Agregar Paciente</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Gestión de Odontólogos
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="/listarOdontologo.html"
+                      >Listar Odontólogos</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/agregarOdontologo.html"
+                      >Agregar Odontólogo</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Gestión de Turnos
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="/listarTurno.html"
+                      >Listar Turnos</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/agregarTurno.html"
+                      >Agregar Turno</a
+                    >
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+    </nav>
+    <div class="container-xl">
+      <h1 class="mt-5">Pacientes</h1>
+      <table class="table table-striped-columns" id="pacienteTable">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Orden</th>
+            <th>Apellido</th>
             <th>Nombre</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-      <!-- Tabla de odontólogos -->
-      <h2 class="mt-5">Odontólogos</h2>
-      <table class="table table-striped" id="odontologoTable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
+            <th>DNI</th>
+            <th>Fecha de Ingreso</th>
+            <th>Calle</th>
+            <th>Numero</th>
+            <th>Localidad</th>
+            <th>Provincia</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -74,12 +152,26 @@
           <div class="modal-body">
             <form id="addTurnoForm">
               <div class="mb-3">
-                <label for="pacienteSelect" class="form-label">Paciente</label>
-                <select
-                  id="pacienteSelect"
-                  class="form-select"
+                <div class="mb-3">
+                  <label for="editApellido" class="form-label">Apellido</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editApellido"
+                    required
+                  />
+                </div>
+                <label for="editNombre" class="form-label">Nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editNombre"
                   required
-                ></select>
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editDni" class="form-label">DNI</label>
+                <input type="text" class="form-control" id="editDni" required />
               </div>
               <div class="mb-3">
                 <label for="odontologoSelect" class="form-label"
@@ -109,6 +201,6 @@
       </div>
     </div>
 
-    <script src="/js/turnos.js"></script>
+    <script src="/js/agregarTurno.js"></script>
   </body>
 </html>

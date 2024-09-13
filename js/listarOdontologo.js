@@ -21,7 +21,6 @@ function fetchOdontologo() {
         const row = document.createElement("tr");
 
         row.innerHTML = `
-                <td>${odontologo.id}</td>
                 <td>${odontologo.numeromatricula}</td>
                 <td>${odontologo.nombre}</td>
                 <td>${odontologo.apellido}</td>

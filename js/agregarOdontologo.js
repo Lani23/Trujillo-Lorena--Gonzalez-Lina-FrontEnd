@@ -22,13 +22,21 @@ form.addEventListener("submit", function (event) {
     },
     body: JSON.stringify(datosFormulario),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((errorData) => {
+          throw new Error(`Error ${response.status}: ${errorData.errors[0]}`);
+        });
+      }
+      return response.json();
+    })
     .then((data) => {
       console.log(data);
       alert("Odontólogo agregado con éxito");
       form.reset(); // Resetear el formulario
     })
     .catch((error) => {
+      alert(`Error agregando odontólogo: ${error.message}`);
       console.error("Error agregando odontólogo:", error);
     });
 });
