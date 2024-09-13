@@ -4,36 +4,33 @@ const apiURL = "http://localhost:8080";
 const tableBody = document.querySelector("#turnoTable tbody");
 const editModal = new bootstrap.Modal(document.getElementById("editModal"));
 const editForm = document.getElementById("editForm");
-let currenctTurnosId;
-let currentPacienteId;
-let currentOdontologoId;
+const odontologoSelect = document.getElementById("editOdontologoSelect"); // Asegúrate de que este ID sea correcto
 
-// Función para obtener y mostrar los odontólogos
+// Variables para almacenar los datos del turno actual
+let currentTurnoId;
+let currentPacienteId;
+
+// Función para obtener y mostrar los turnos
 function fetchTurnos() {
-  // listar los pacientes
   fetch(`${apiURL}/turnos/buscartodos`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      // Limpiar el contenido actual de la tabla
+      console.log(data); // Verificar la estructura de los datos
       tableBody.innerHTML = "";
 
-      // Insertar los datos en la tabla
-      data.forEach((turnos, index) => {
+      data.forEach((turno) => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
-                <td>${turnos.id}</td>
-                <td>${turnos.paciente.nombre}</td>
-                <td>${turnos.paciente.apellido}</td>
-                <td>${turnos.paciente.dni}</td>
-                <td>${turnos.odontologo.nombre}</td>
-                <td>${turnos.odontologo.apellido}</td>
-                <td>${turnos.fecha}</td>
+                <td>${turno.pacienteResponseDto.nombre}</td>
+                <td>${turno.pacienteResponseDto.apellido}</td>
+                <td>${turno.pacienteResponseDto.dni}</td>
+                <td>${turno.odontologoResponseDto.nombre}</td>
+                <td>${turno.odontologoResponseDto.apellido}</td>
+                <td>${turno.fecha}</td>
                 <td>
-                    <button class="btn btn-primary btn-sm" onclick="editPaciente(${turnos.id}, '${turnos.paciente.nombre}','${turnos.paciente.apellido}', '${turnos.paciente.dni}', 
-                    '${turnos.odontologo.nombre}', '${turnos.odontologo.apellido}', '${paciente.domicilio.calle}', '${urnos.fecha}')">Modificar</button>
-                    <button class="btn btn-danger btn-sm" onclick="deletePaciente(${turnos.id})">Eliminar</button>
+                    <button class="btn btn-primary btn-sm" onclick="editTurno(${turno.id}, ${turno.pacienteResponseDto.id}, '${turno.fecha}')">Modificar</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteTurno(${turno.id})">Eliminar</button>
                 </td>
                 `;
 
@@ -45,96 +42,103 @@ function fetchTurnos() {
     });
 }
 
-// Función para abrir el modal y cargar los datos del paciente
-editPaciente = function (
-  id,
-  nombrePaciente,
-  apellidoPaciente,
-  dni,
-  nombreOdontologo,
-  apellidoOdontologo,
-  fechaTurno
-) {
-  currenctTurnosId = id;
-  currentPacienteId = idPaciente;
-  currentOdontologoId = idOdontologo;
-  document.getElementById("editNombrePaciente").value = nombrePaciente;
-  document.getElementById("editApellidoPaciente").value = apellidoPaciente;
-  document.getElementById("editDni").value = dni;
-  document.getElementById("editNombreOdontologo").value = nombreOdontologo;
-  document.getElementById("editApellidoOdontologo").value = apellidoOdontologo;
-  document.getElementById("editFechaTurno").value = fechaTurno;
-  editModal.show();
-};
+// Función para obtener y mostrar los odontólogos en un select
+function fetchOdontologos() {
+  fetch(`${apiURL}/odontologo/buscartodos`)
+    .then((response) => response.json())
+    .then((data) => {
+      // Verifica si `data` contiene datos
+      console.log(data);
 
-// Función para editar un paciente
+      odontologoSelect.innerHTML = ""; // Limpiar el select actual
+
+      data.forEach((odontologo) => {
+        const option = document.createElement("option");
+        option.value = odontologo.id;
+        option.textContent = `${odontologo.nombre} ${odontologo.apellido} - Matrícula: ${odontologo.numeromatricula}`;
+        odontologoSelect.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching odontologos:", error);
+    });
+}
+
+// Función para abrir el modal y cargar los datos del turno (incluye la lista de odontólogos)
+function editTurno(id, pacienteId, fecha) {
+  currentTurnoId = id;
+  currentPacienteId = pacienteId;
+  document.getElementById("editFechaTurno").value = fecha;
+  
+  // Cargar los odontólogos antes de mostrar el modal
+  fetchOdontologos();
+
+  fetch(`${apiURL}/turnos/${id}`)
+    .then((response) => response.json())
+    .then((turno) => {
+      // Seleccionar el odontólogo actual
+      document.getElementById("editOdontologoSelect").value = turno.odontologo_id;
+    })
+    .catch((error) => {
+      console.error("Error fetching turno data:", error);
+    });
+
+  editModal.show();
+}
+
+// Función para editar un turno
 editForm.addEventListener("submit", function (event) {
   event.preventDefault();
-  const nombrePaciente = document.getElementById("editNombrePaciente").value;
-  const apellidoPaciente = document.getElementById(
-    "editApellidoPaciente"
-  ).value;
-  const dni = document.getElementById("editDni").value;
-  const nombreOdontologo = document.getElementById(
-    "editNombreOdontologo"
-  ).value;
-  const apellidoOdontologo = document.getElementById(
-    "editApellidoOdontologo"
-  ).value;
   const fechaTurno = document.getElementById("editFechaTurno").value;
+  const odontologoId = document.getElementById("editOdontologoSelect").value;
 
-  //modificar un paciente
   fetch(`${apiURL}/turnos/modificar`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      id: currenctTurnosId,
-      paciente: {
-        id: currentPacienteId,
-        nombrePaciente,
-        apellidoPaciente,
-        dni,
-      },
-      odontologo: {
-        id: currentOdontologoId,
-        nombreOdontologo,
-        apellidoOdontologo,
-      },
-      fechaTurno,
+      id: currentTurnoId,
+      paciente_id: currentPacienteId,
+      odontologo_id: odontologoId,
+      fecha: fechaTurno,
     }),
   })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      alert("Turno modificado con éxito");
+      alert("Fecha del turno modificada con éxito");
       fetchTurnos();
       editModal.hide();
     })
     .catch((error) => {
-      console.error("Error editando turno:", error);
+      console.error("Error modificando turno:", error);
     });
 });
 
-// Función para eliminar un paciente
-fetchTurnos = function (id) {
+// Función para eliminar un turno
+function deleteTurno(id) {
   if (confirm("¿Está seguro de que desea eliminar este turno?")) {
-    // eliminar el paciente
     fetch(`${apiURL}/turnos/eliminar/${id}`, {
       method: "DELETE",
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error eliminando turno");
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
         alert("Turno eliminado con éxito");
-        fetchPacientes();
+        fetchTurnos();
       })
       .catch((error) => {
-        console.error("Error borrando turno:", error);
+        console.error("Error eliminando turno:", error);
       });
   }
-};
+}
 
-// Llamar a la función para obtener y mostrar los odontólogos
-fetchPacientes();
+// Llamar a la función para obtener y mostrar los turnos y odontólogos al cargar la página
+fetchTurnos();
+fetchOdontologos();
